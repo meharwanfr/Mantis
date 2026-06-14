@@ -9,9 +9,14 @@ interface SidebarItem {
 }
 
 interface UploadedManual {
-  name: string;
-  date: string;
-  status: "Processed" | "Processing" | "Failed";
+  id?: string;
+  title?: string;
+  description?: string;
+  tags?: string[];
+  name?: string;
+  date?: string;
+  status?: string;
+  created_at?: string;
 }
 
 export default function DashboardPage() {
@@ -19,7 +24,12 @@ export default function DashboardPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
   const [productId, setProductId] = useState("xiaomi-scooter-4-pro");
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadDescription, setUploadDescription] = useState("");
+  const [uploadTags, setUploadTags] = useState("");
+  const [uploadImage, setUploadImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [manualList, setManualList] = useState<UploadedManual[]>([]);
 
@@ -100,12 +110,23 @@ export default function DashboardPage() {
       return;
     }
 
+    if (!uploadTitle.trim()) {
+      setUploadStatus("⚠️ Error: Please enter a product title.");
+      return;
+    }
+
     setUploading(true);
     setUploadStatus("⏳ Uploading & indexing via MOSS...");
 
     const formData = new FormData();
     formData.append("productId", productId);
+    formData.append("title", uploadTitle);
+    formData.append("description", uploadDescription);
+    formData.append("tags", uploadTags);
     formData.append("file", selectedFile);
+    if (uploadImage) {
+      formData.append("image", uploadImage);
+    }
 
     try {
       const response = await fetch("http://localhost:8000/api/upload-manual", {
@@ -195,6 +216,71 @@ export default function DashboardPage() {
                 </select>
               </div>
 
+              {/* Title Field */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Product Title</label>
+                <input
+                  type="text"
+                  value={uploadTitle}
+                  onChange={(e) => setUploadTitle(e.target.value)}
+                  placeholder="e.g. Xiaomi Mi Electric Scooter 4 Pro User Manual"
+                  className="rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
+                  disabled={uploading}
+                />
+              </div>
+
+              {/* Description Field */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Description</label>
+                <textarea
+                  value={uploadDescription}
+                  onChange={(e) => setUploadDescription(e.target.value)}
+                  placeholder="Brief product description..."
+                  rows={2}
+                  className="rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white resize-none"
+                  disabled={uploading}
+                />
+              </div>
+
+              {/* Tags Field */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  value={uploadTags}
+                  onChange={(e) => setUploadTags(e.target.value)}
+                  placeholder="e.g. scooter, electric, troubleshooting"
+                  className="rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
+                  disabled={uploading}
+                />
+              </div>
+
+              {/* Image Upload */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Product Image (optional)</label>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="rounded-lg border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:border-mantis-green transition-colors cursor-pointer"
+                    disabled={uploading}
+                  >
+                    Choose Image
+                  </button>
+                  <span className="text-xs text-slate-400 dark:text-slate-500">
+                    {uploadImage ? uploadImage.name : 'No image selected'}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    ref={imageInputRef}
+                    onChange={(e) => setUploadImage(e.target.files?.[0] || null)}
+                    disabled={uploading}
+                  />
+                </div>
+              </div>
+
               {/* Drag and drop card */}
               <div
                 onClick={handleCardClick}
@@ -267,18 +353,30 @@ export default function DashboardPage() {
             {manualList.map((man, idx) => (
               <div
                 key={idx}
-                className="flex flex-col gap-1.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-950/20 hover:border-slate-200 dark:hover:border-slate-800 transition-all"
+                className="flex flex-col gap-1.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-950/20 hover:border-slate-200 dark:hover:border-slate-800 transition-all p-3"
               >
                 <div className="flex items-center justify-between gap-2">
                   <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-[11px] truncate leading-tight flex-1">
-                    {man.name}
+                    {man.title || man.name || 'Untitled'}
                   </h4>
                   <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950/40 px-1.5 py-0.5 text-[9px] font-bold text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-600/10 dark:ring-green-900/30">
-                    {man.status}
+                    {man.status || 'Processed'}
                   </span>
                 </div>
+                {man.description && (
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 line-clamp-2">{man.description}</p>
+                )}
+                {man.tags && man.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {man.tags.slice(0, 3).map((tag, i) => (
+                      <span key={i} className="rounded-full bg-slate-100 dark:bg-slate-950 px-1.5 py-0.5 text-[8px] font-semibold text-slate-500 dark:text-slate-400">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="flex items-center justify-between text-[9px] text-slate-400 dark:text-slate-500 font-semibold">
-                  <span>{man.date}</span>
+                  <span>{man.created_at ? new Date(man.created_at).toLocaleDateString() : man.date || ''}</span>
                   <button className="text-mantis-green hover:underline cursor-pointer">View</button>
                 </div>
               </div>
