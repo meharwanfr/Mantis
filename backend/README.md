@@ -1,4 +1,4 @@
-# mantis
+# backend
 
 To install dependencies:
 
