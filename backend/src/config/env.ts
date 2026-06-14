@@ -8,6 +8,7 @@ export const ENV = {
   TURSO_AUTH_TOKEN: process.env.TURSO_AUTH_TOKEN || '',
   PORT: Number(process.env.PORT) || 8000,
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '',
 };
 
 if (!ENV.MOSS_PROJECT_ID || !ENV.MOSS_PROJECT_KEY) {
@@ -15,4 +16,7 @@ if (!ENV.MOSS_PROJECT_ID || !ENV.MOSS_PROJECT_KEY) {
 }
 if (!ENV.TURSO_DATABASE_URL) {
   console.warn('⚠️ Turso DB URL not set in .env');
+}
+if (!ENV.GEMINI_API_KEY) {
+  console.warn('⚠️ Gemini API key not set in .env');
 }

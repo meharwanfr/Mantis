@@ -42,4 +42,20 @@ describe("Mantis API Server", () => {
     expect(Array.isArray(data.suggestedActions)).toBe(true);
     expect(Array.isArray(data.manualLinks)).toBe(true);
   });
+
+  it("returns 400 Bad Request for POST /api/upload-manual with invalid file type", async () => {
+    const formData = new FormData();
+    formData.append("productId", "xiaomi-scooter-4-pro");
+    formData.append("file", new Blob(["dummy text content"], { type: "text/plain" }), "test.txt");
+
+    const response = await app.handle(
+      new Request("http://localhost/api/upload-manual", {
+        method: "POST",
+        body: formData,
+      })
+    );
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.error).toBeDefined();
+  });
 });

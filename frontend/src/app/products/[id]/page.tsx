@@ -131,19 +131,19 @@ export default function ProductDetailPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+      <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
         <Link href="/" className="hover:text-mantis-green transition-colors">Home</Link>
         <span className="text-slate-400">/</span>
         <Link href="/products" className="hover:text-mantis-green transition-colors">Products</Link>
         <span className="text-slate-400">/</span>
-        <span className="text-slate-700 font-bold truncate max-w-[200px]">{product.name}</span>
+        <span className="text-slate-700 dark:text-slate-300 font-bold truncate max-w-[200px]">{product.name}</span>
       </nav>
 
       {/* Main Back Header */}
       <div className="mt-4">
         <Link
           href="/products"
-          className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 hover:text-mantis-green transition-colors"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-mantis-green dark:hover:text-mantis-green transition-colors"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -153,9 +153,9 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Product Header Card */}
-      <div className="mt-6 grid grid-cols-1 gap-8 rounded-3xl border border-slate-200/80 bg-white p-6 md:p-8 shadow-sm md:grid-cols-12">
+      <div className="mt-6 grid grid-cols-1 gap-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 md:p-8 shadow-sm md:grid-cols-12">
         {/* Product Image Panel */}
-        <div className="md:col-span-4 flex items-center justify-center rounded-2xl bg-slate-50 p-6 aspect-square max-h-[320px] mx-auto md:w-full">
+        <div className="md:col-span-4 flex items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-950 p-6 aspect-square max-h-[320px] mx-auto md:w-full">
           {product.svgIcon}
         </div>
 
@@ -163,25 +163,25 @@ export default function ProductDetailPage() {
         <div className="md:col-span-8 flex flex-col justify-between">
           <div>
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700 ring-1 ring-inset ring-green-600/10">
+              <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950/40 px-2.5 py-0.5 text-xs font-semibold text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-600/10 dark:ring-green-900/30">
                 Verified Manual
               </span>
-              <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-600/10">
+              <span className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 px-2.5 py-0.5 text-xs font-semibold text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-600/10 dark:ring-blue-900/30">
                 Up to date
               </span>
             </div>
             
-            <h1 className="mt-4 font-display text-2xl font-extrabold text-slate-900 md:text-3xl leading-snug">
+            <h1 className="mt-4 font-display text-2xl font-extrabold text-slate-900 dark:text-slate-50 md:text-3xl leading-snug">
               {product.name}
             </h1>
             
-            <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs font-semibold text-slate-500 uppercase tracking-wide">
-              <p>Manufacturer: <span className="text-slate-800 font-bold">{product.manufacturer}</span></p>
-              <p>Category: <span className="text-slate-800 font-bold">{product.category}</span></p>
-              <p>Added: <span className="text-slate-800 font-bold">{product.added}</span></p>
+            <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              <p>Manufacturer: <span className="text-slate-800 dark:text-slate-200 font-bold">{product.manufacturer}</span></p>
+              <p>Category: <span className="text-slate-800 dark:text-slate-200 font-bold">{product.category}</span></p>
+              <p>Added: <span className="text-slate-800 dark:text-slate-200 font-bold">{product.added}</span></p>
             </div>
             
-            <p className="mt-5 text-sm text-slate-600 leading-relaxed max-w-2xl">
+            <p className="mt-5 text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
               {product.description}
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function ProductDetailPage() {
             >
               Ask About This Product
             </Link>
-            <button className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-6 font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+            <button className="flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -209,23 +209,23 @@ export default function ProductDetailPage() {
         {/* Left side tabs: Overview, Specifications */}
         <div className="lg:col-span-8 flex flex-col">
           {/* Tabs header */}
-          <div className="flex border-b border-slate-200">
+          <div className="flex border-b border-slate-200 dark:border-slate-800">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`pb-4 text-sm font-semibold border-b-2 px-4 transition-all ${
+              className={`pb-4 text-sm font-semibold border-b-2 px-4 transition-all cursor-pointer ${
                 activeTab === "overview"
                   ? "border-mantis-green text-mantis-green"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab("specs")}
-              className={`pb-4 text-sm font-semibold border-b-2 px-4 transition-all ${
+              className={`pb-4 text-sm font-semibold border-b-2 px-4 transition-all cursor-pointer ${
                 activeTab === "specs"
                   ? "border-mantis-green text-mantis-green"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
             >
               Specifications
@@ -233,23 +233,23 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Tabs content */}
-          <div className="mt-6 flex-1 rounded-2xl bg-white border border-slate-200/80 p-6 shadow-sm">
+          <div className="mt-6 flex-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
             {activeTab === "overview" && (
               <div>
-                <h2 className="font-display text-lg font-bold text-slate-800">Support Overview</h2>
-                <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                <h2 className="font-display text-lg font-bold text-slate-800 dark:text-slate-200">Support Overview</h2>
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                   This product has verified diagnostic guidelines loaded. You can chat with the AI Diagnostic Assistant
                   to investigate issues, review manual pages, and run recommended troubleshooting checklists.
                 </p>
-                <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                  <div className="mt-0.5 rounded-full bg-green-50 p-1 text-mantis-green">
+                <div className="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 flex items-start gap-3">
+                  <div className="mt-0.5 rounded-full bg-green-50 dark:bg-green-950/40 p-1 text-mantis-green">
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div className="text-xs">
-                    <h4 className="font-bold text-slate-800">AI Technician Ready</h4>
-                    <p className="mt-1 text-slate-500 leading-relaxed">
+                    <h4 className="font-bold text-slate-800 dark:text-slate-200">AI Technician Ready</h4>
+                    <p className="mt-1 text-slate-500 dark:text-slate-400 leading-relaxed">
                       Our assistant conducts structured diagnostics. Rather than just searching, it runs systematic elimination steps to identify faults.
                     </p>
                   </div>
@@ -259,12 +259,12 @@ export default function ProductDetailPage() {
 
             {activeTab === "specs" && (
               <div>
-                <h2 className="font-display text-lg font-bold text-slate-800">Technical Specifications</h2>
+                <h2 className="font-display text-lg font-bold text-slate-800 dark:text-slate-200">Technical Specifications</h2>
                 <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                   {product.specifications.map((spec, index) => (
-                    <div key={index} className="border-b border-slate-100 pb-2">
-                      <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{spec.label}</dt>
-                      <dd className="mt-1 text-sm font-semibold text-slate-800">{spec.value}</dd>
+                    <div key={index} className="border-b border-slate-100 dark:border-slate-800 pb-2">
+                      <dt className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide">{spec.label}</dt>
+                      <dd className="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-200">{spec.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -274,21 +274,21 @@ export default function ProductDetailPage() {
 
           {/* Popular Issues (Bottom Left) */}
           <div className="mt-8">
-            <h2 className="font-display text-lg font-bold text-slate-800">Popular Issues</h2>
+            <h2 className="font-display text-lg font-bold text-slate-800 dark:text-slate-200">Popular Issues</h2>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {product.commonIssues.map((issue, idx) => (
                 <Link
                   key={idx}
                   href={`/diagnostics?product=${product.id}&query=${encodeURIComponent(issue.initialQuery)}`}
-                  className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white p-4 hover:shadow-md hover:border-slate-300 transition-all group cursor-pointer"
+                  className="flex items-center justify-between rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md dark:hover:shadow-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700 transition-all group cursor-pointer"
                 >
                   <div>
-                    <h3 className="font-semibold text-slate-800 text-sm group-hover:text-mantis-green transition-colors">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-200 text-sm group-hover:text-mantis-green transition-colors">
                       {issue.title}
                     </h3>
-                    <p className="mt-1 text-xs text-slate-400 font-medium">{issue.count} questions logged</p>
+                    <p className="mt-1 text-xs text-slate-400 dark:text-slate-500 font-medium">{issue.count} questions logged</p>
                   </div>
-                  <div className="rounded-full bg-slate-50 p-1.5 text-slate-400 group-hover:bg-green-50 group-hover:text-mantis-green transition-colors">
+                  <div className="rounded-full bg-slate-50 dark:bg-slate-950 p-1.5 text-slate-400 group-hover:bg-green-50 dark:group-hover:bg-green-950/40 group-hover:text-mantis-green transition-colors">
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
@@ -301,20 +301,20 @@ export default function ProductDetailPage() {
 
         {/* Right side: Knowledge Repository list */}
         <div className="lg:col-span-4">
-          <h2 className="font-display text-lg font-bold text-slate-800">Knowledge Repository</h2>
+          <h2 className="font-display text-lg font-bold text-slate-800 dark:text-slate-200">Knowledge Repository</h2>
           <div className="mt-4 flex flex-col gap-3">
             {product.resources.map((res, idx) => (
               <a
                 key={idx}
                 href={res.url}
-                className="flex items-center gap-4 rounded-xl border border-slate-200/80 bg-white p-4 hover:shadow-md hover:border-slate-300 transition-all group"
+                className="flex items-center gap-4 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 hover:shadow-md dark:hover:shadow-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700 transition-all group"
               >
                 <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${
                   res.type === "PDF" 
-                    ? "bg-red-50 text-red-600" 
+                    ? "bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400" 
                     : res.type === "Video"
-                    ? "bg-blue-50 text-blue-600"
-                    : "bg-purple-50 text-purple-600"
+                    ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400"
+                    : "bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400"
                 }`}>
                   {res.type === "PDF" && (
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -335,10 +335,10 @@ export default function ProductDetailPage() {
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-slate-800 text-xs truncate group-hover:text-mantis-green transition-colors">
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-xs truncate group-hover:text-mantis-green transition-colors">
                     {res.name}
                   </h4>
-                  <p className="mt-1 text-[11px] text-slate-400 font-medium">{res.size}</p>
+                  <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500 font-medium">{res.size}</p>
                 </div>
               </a>
             ))}

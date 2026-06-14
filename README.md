@@ -2,6 +2,10 @@
 
 Mantis is an intelligent support and diagnostics portal built for a 24-hour hackathon. It allows companies to list their products and upload manuals, and gives users access to an interactive, technician-style AI Diagnostic Assistant to troubleshoot and repair equipment systematically.
 
+## 🛠️ Diagnostics Architecture Flow
+
+<img src="docs/image.png" alt="Diagnostics Architecture Flow" width="300" />
+
 ---
 
 ## 💻 Tech Stack & Versions

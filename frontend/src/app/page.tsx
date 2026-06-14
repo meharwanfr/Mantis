@@ -166,10 +166,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="grid grid-cols-1 items-center gap-12 md:grid-cols-12 md:py-12 lg:gap-16">
         <div className="md:col-span-7 flex flex-col justify-center">
-          <h1 className="font-display text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50 sm:text-5xl lg:text-6xl">
             AI-Powered Support for Every Product You Own
           </h1>
-          <p className="mt-6 text-lg text-slate-600 max-w-lg leading-relaxed">
+          <p className="mt-6 text-lg text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
             Get instant, accurate answers to any product issue. Upload manuals,
             ask questions, and let Mantis guide you.
           </p>
@@ -182,7 +182,7 @@ export default function Home() {
             </Link>
             <Link
               href="/products"
-              className="flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+              className="flex h-12 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 font-semibold text-slate-700 dark:text-slate-300 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
               Browse Products
             </Link>
@@ -191,9 +191,9 @@ export default function Home() {
         
         {/* Hero Image Collage */}
         <div className="md:col-span-5 flex justify-center">
-          <div className="relative w-full max-w-md aspect-square rounded-2xl bg-white p-4 shadow-md flex items-center justify-center border border-slate-100">
+          <div className="relative w-full max-w-md aspect-square rounded-2xl bg-white dark:bg-slate-900 p-4 shadow-md dark:shadow-slate-950/40 flex items-center justify-center border border-slate-100 dark:border-slate-800">
             <img
-              src="/hero-products.png"
+              src="/hero-products.png?v=2"
               alt="Mantis products support collage"
               className="object-contain w-full h-full"
               onError={(e) => {
@@ -209,19 +209,19 @@ export default function Home() {
             {/* SVG Fallback if image not ready */}
             <div className="fallback-collage hidden w-full h-full flex-col justify-center items-center gap-6">
               <div className="flex gap-6">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-mantis-green">
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-mantis-green">
                   <svg className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <circle cx="6" cy="18" r="3" /><circle cx="18" cy="18" r="3" />
                     <path d="M6 15h11a1 1 0 001-1V5a1 1 0 00-1-1H9" />
                   </svg>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-mantis-green">
+                <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-mantis-green">
                   <svg className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path d="M3 14c0-4.97 4.03-9 9-9s9 4.03 9 9M3 14v3a2 2 0 002 2h2v-6H5a2 2 0 00-2 2z" />
                   </svg>
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-mantis-green">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 text-mantis-green">
                 <svg className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                   <rect x="3" y="3" width="18" height="18" rx="2" />
                   <circle cx="12" cy="12" r="4" />
@@ -234,42 +234,42 @@ export default function Home() {
 
       {/* Popular Categories */}
       <section className="mt-20">
-        <h2 className="font-display text-2xl font-bold text-slate-900">Popular Categories</h2>
+        <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-50">Popular Categories</h2>
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {categories.map((cat, idx) => (
             <Link
               key={idx}
               href={`/products?category=${encodeURIComponent(cat.name)}`}
-              className="flex flex-col items-center rounded-2xl border border-slate-100 bg-white p-6 text-center hover:shadow-md hover:border-slate-200 transition-all group"
+              className="flex flex-col items-center rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 text-center hover:shadow-md dark:hover:shadow-slate-950/50 hover:border-slate-200 dark:hover:border-slate-700 transition-all group"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-50 group-hover:scale-105 transition-transform">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-50 dark:bg-green-950/40 group-hover:scale-105 transition-transform">
                 {cat.icon}
               </div>
-              <h3 className="mt-4 font-semibold text-slate-800 text-sm group-hover:text-mantis-green transition-colors">
+              <h3 className="mt-4 font-semibold text-slate-800 dark:text-slate-200 text-sm group-hover:text-mantis-green transition-colors">
                 {cat.name}
               </h3>
-              <p className="mt-1 text-xs text-slate-500">{cat.count}</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{cat.count}</p>
             </Link>
           ))}
         </div>
       </section>
 
       {/* How Mantis Helps You */}
-      <section className="mt-24 rounded-3xl bg-white border border-slate-100 p-8 sm:p-12 shadow-sm">
+      <section className="mt-24 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 sm:p-12 shadow-sm dark:shadow-slate-950/40">
         <div className="text-center max-w-xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-slate-900">How Mantis Helps You</h2>
-          <p className="mt-3 text-slate-500">
+          <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-50">How Mantis Helps You</h2>
+          <p className="mt-3 text-slate-500 dark:text-slate-400">
             Four simple steps to troubleshoot, repair, and maintain your equipment.
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, idx) => (
             <div key={idx} className="relative flex flex-col items-start p-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 dark:bg-green-950/40">
                 {step.icon}
               </div>
-              <h3 className="mt-6 font-semibold text-slate-800 text-base">{step.title}</h3>
-              <p className="mt-2 text-sm text-slate-500 leading-relaxed">{step.desc}</p>
+              <h3 className="mt-6 font-semibold text-slate-800 dark:text-slate-200 text-base">{step.title}</h3>
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -278,7 +278,7 @@ export default function Home() {
       {/* Recently Added Manuals */}
       <section className="mt-24">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-bold text-slate-900">Recently Added Manuals</h2>
+          <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-50">Recently Added Manuals</h2>
           <Link
             href="/products"
             className="text-sm font-semibold text-mantis-green hover:text-mantis-green-dark transition-colors"
@@ -291,33 +291,33 @@ export default function Home() {
             <Link
               key={man.id}
               href={`/products/${man.id}`}
-              className="flex flex-col rounded-2xl border border-slate-100 bg-white p-5 hover:shadow-md hover:border-slate-200 transition-all group"
+              className="flex flex-col rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 hover:shadow-md dark:hover:shadow-slate-950/50 hover:border-slate-200 dark:hover:border-slate-700 transition-all group"
             >
-              <div className="flex aspect-square w-full items-center justify-center rounded-xl bg-slate-50 p-4 mb-4">
+              <div className="flex aspect-square w-full items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-950 p-4 mb-4">
                 {man.svgIcon}
               </div>
-              <h3 className="font-semibold text-slate-800 text-sm leading-snug group-hover:text-mantis-green transition-colors line-clamp-2">
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 text-sm leading-snug group-hover:text-mantis-green transition-colors line-clamp-2">
                 {man.name}
               </h3>
-              <p className="mt-2 text-xs text-slate-500 font-medium">{man.type}</p>
-              <p className="mt-1 text-[11px] text-slate-400">{man.added}</p>
+              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 font-medium">{man.type}</p>
+              <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500">{man.added}</p>
             </Link>
           ))}
           
           {/* View All Card */}
           <Link
             href="/products"
-            className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 hover:border-mantis-green bg-white p-5 hover:shadow-md transition-all group text-center cursor-pointer min-h-[260px]"
+            className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 hover:border-mantis-green dark:hover:border-mantis-green bg-white dark:bg-slate-900 p-5 hover:shadow-md dark:hover:shadow-slate-950/50 transition-all group text-center cursor-pointer min-h-[260px]"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 group-hover:bg-green-50 transition-colors">
-              <svg className="h-6 w-6 text-slate-400 group-hover:text-mantis-green transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-950 group-hover:bg-green-50 dark:group-hover:bg-green-950/40 transition-colors">
+              <svg className="h-6 w-6 text-slate-400 dark:text-slate-500 group-hover:text-mantis-green transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </div>
-            <h3 className="mt-4 font-semibold text-slate-700 text-sm group-hover:text-mantis-green transition-colors">
+            <h3 className="mt-4 font-semibold text-slate-700 dark:text-slate-200 text-sm group-hover:text-mantis-green transition-colors">
               View All Manuals
             </h3>
-            <p className="mt-1 text-xs text-slate-400">Browse all uploaded manuals</p>
+            <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">Browse all uploaded manuals</p>
           </Link>
         </div>
       </section>

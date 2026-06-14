@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -15,7 +15,7 @@ interface Product {
   svgIcon: React.ReactNode;
 }
 
-export default function ProductsCatalog() {
+function ProductsCatalogContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "All";
 
@@ -131,10 +131,10 @@ export default function ProductsCatalog() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Title Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-slate-200/60 pb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-slate-200/60 dark:border-slate-800 pb-6">
         <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">Product Marketplace</h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-50">Product Marketplace</h1>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
             Browse registered products, download manuals, and start active diagnostics.
           </p>
         </div>
@@ -142,14 +142,14 @@ export default function ProductsCatalog() {
         {/* Catalog Search */}
         <div className="relative w-full md:w-80">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="h-4 w-4 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <input
             type="search"
             placeholder="Search products..."
-            className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-4 text-sm outline-none transition-all placeholder:text-slate-400 focus:border-mantis-green focus:ring-1 focus:ring-mantis-green"
+            className="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-2 pl-9 pr-4 text-sm outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-mantis-green focus:ring-1 focus:ring-mantis-green dark:text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -162,10 +162,10 @@ export default function ProductsCatalog() {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all ${
+            className={`rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all cursor-pointer ${
               selectedCategory === cat
                 ? "bg-mantis-green text-white shadow-sm"
-                : "bg-white border border-slate-200 text-slate-600 hover:text-slate-800 hover:border-slate-300"
+                : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 hover:border-slate-300 dark:hover:border-slate-700"
             }`}
           >
             {cat}
@@ -178,27 +178,27 @@ export default function ProductsCatalog() {
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="flex flex-col rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md hover:border-slate-300 transition-all group"
+            className="flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm hover:shadow-md dark:hover:shadow-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700 transition-all group"
           >
             {/* SVG Product Preview */}
-            <div className="flex aspect-video w-full items-center justify-center rounded-xl bg-slate-50 p-4 mb-4">
+            <div className="flex aspect-video w-full items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-950 p-4 mb-4">
               {product.svgIcon}
             </div>
 
             {/* Product Metadata */}
             <div className="flex-1 flex flex-col">
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/10">
+                <span className="inline-flex items-center rounded-full bg-green-50 dark:bg-green-950/40 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-300 ring-1 ring-inset ring-green-600/10 dark:ring-green-900/30">
                   {product.category}
                 </span>
-                <span className="text-[11px] text-slate-400 font-medium">{product.added}</span>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">{product.added}</span>
               </div>
               
-              <h2 className="mt-3 font-display text-lg font-bold text-slate-800 group-hover:text-mantis-green transition-colors leading-snug line-clamp-1">
+              <h2 className="mt-3 font-display text-lg font-bold text-slate-800 dark:text-slate-200 group-hover:text-mantis-green transition-colors leading-snug line-clamp-1">
                 {product.name}
               </h2>
               
-              <p className="mt-2 text-xs text-slate-500 leading-relaxed flex-1 line-clamp-2">
+              <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 line-clamp-2">
                 {product.description}
               </p>
 
@@ -206,7 +206,7 @@ export default function ProductsCatalog() {
               <div className="mt-6 flex gap-3">
                 <Link
                   href={`/products/${product.id}`}
-                  className="flex-1 flex h-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="flex-1 flex h-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                 >
                   View Details
                 </Link>
@@ -223,14 +223,26 @@ export default function ProductsCatalog() {
 
         {filteredProducts.length === 0 && (
           <div className="col-span-full py-16 text-center">
-            <svg className="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 className="mt-4 text-base font-bold text-slate-700">No products found</h3>
-            <p className="mt-1 text-sm text-slate-400">Try modifying your search queries or category filters.</p>
+            <h3 className="mt-4 text-base font-bold text-slate-700 dark:text-slate-300">No products found</h3>
+            <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">Try modifying your search queries or category filters.</p>
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsCatalog() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-[400px] items-center justify-center text-sm font-semibold text-slate-400">
+        Loading Products Catalog...
+      </div>
+    }>
+      <ProductsCatalogContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import DiagnosticAssistant from "@/components/DiagnosticAssistant";
@@ -11,7 +11,7 @@ interface Conversation {
   time: string;
 }
 
-export default function DiagnosticsPage() {
+function DiagnosticsContent() {
   const searchParams = useSearchParams();
   const initialProduct = searchParams.get("product") || "xiaomi-scooter-4-pro";
   const initialQuery = searchParams.get("query") || "";
@@ -38,19 +38,19 @@ export default function DiagnosticsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Page Header */}
-      <div className="border-b border-slate-200/60 pb-5">
-        <h1 className="font-display text-2xl font-bold text-slate-900">Diagnostics Assistant</h1>
-        <p className="mt-1 text-sm text-slate-500">
+      <div className="border-b border-slate-200/60 dark:border-slate-800 pb-5">
+        <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-slate-50">Diagnostics Assistant</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Troubleshoot faults with verified manufacturer-provided manuals and guides.
         </p>
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-12 items-start">
         {/* Left Panel: Conversation Lists */}
-        <aside className="md:col-span-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <span className="font-display font-bold text-slate-800 text-sm">Conversations</span>
-            <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 text-slate-500 hover:bg-green-50 hover:text-mantis-green transition-all shadow-sm border border-slate-100">
+        <aside className="md:col-span-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+            <span className="font-display font-bold text-slate-800 dark:text-slate-200 text-sm">Conversations</span>
+            <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-500 dark:text-slate-400 hover:bg-green-50 dark:hover:bg-green-950/40 hover:text-mantis-green dark:hover:text-mantis-green transition-all shadow-sm border border-slate-100 dark:border-slate-800">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
@@ -64,16 +64,16 @@ export default function DiagnosticsPage() {
                 <button
                   key={conv.id}
                   onClick={() => setActiveConvId(conv.id)}
-                  className={`w-full flex flex-col items-start rounded-xl px-4 py-3 text-left transition-all ${
+                  className={`w-full flex flex-col items-start rounded-xl px-4 py-3 text-left transition-all cursor-pointer ${
                     isActive
-                      ? "bg-mantis-green-light border border-mantis-green-border text-green-800"
-                      : "bg-white border border-transparent text-slate-600 hover:bg-slate-50"
+                      ? "bg-mantis-green-light dark:bg-green-950/20 border border-mantis-green-border dark:border-green-900/50 text-green-800 dark:text-green-300"
+                      : "bg-white dark:bg-slate-900 border border-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
                   }`}
                 >
-                  <span className={`font-semibold text-xs leading-none ${isActive ? "text-green-700" : "text-slate-800"}`}>
+                  <span className={`font-semibold text-xs leading-none ${isActive ? "text-green-700 dark:text-green-400" : "text-slate-800 dark:text-slate-200"}`}>
                     {conv.title}
                   </span>
-                  <span className="mt-1.5 text-[10px] text-slate-400 font-medium">{conv.time}</span>
+                  <span className="mt-1.5 text-[10px] text-slate-400 dark:text-slate-500 font-medium">{conv.time}</span>
                 </button>
               );
             })}
@@ -81,14 +81,14 @@ export default function DiagnosticsPage() {
         </aside>
 
         {/* Center Panel: Active Chat Window */}
-        <section className="md:col-span-6 rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
+        <section className="md:col-span-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
           {/* Active Chat Header */}
-          <div className="bg-slate-50 border-b border-slate-200/80 px-6 py-4 flex items-center justify-between">
+          <div className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
             <div>
-              <h2 className="font-display font-bold text-slate-800 text-sm">
+              <h2 className="font-display font-bold text-slate-800 dark:text-slate-200 text-sm">
                 {conversations.find((c) => c.id === activeConvId)?.title || "Active Diagnostics"}
               </h2>
-              <p className="text-[10px] text-slate-400 font-medium mt-0.5">Active Technician Session</p>
+              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">Active Technician Session</p>
             </div>
             <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
           </div>
@@ -104,16 +104,16 @@ export default function DiagnosticsPage() {
         {/* Right Panel: Manual Citations & Actions */}
         <aside className="md:col-span-3 flex flex-col gap-6">
           {/* From Manual Citations */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <h3 className="font-display font-bold text-slate-800 text-sm border-b border-slate-100 pb-3">From Manual</h3>
+          <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+            <h3 className="font-display font-bold text-slate-800 dark:text-slate-200 text-sm border-b border-slate-100 dark:border-slate-800 pb-3">From Manual</h3>
             <div className="mt-4 flex flex-col gap-3">
               {manualLinks.map((link, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between rounded-lg bg-slate-50 border border-slate-100 p-3 text-xs font-semibold text-slate-700 hover:bg-green-50/50 hover:border-mantis-green-border cursor-pointer transition-colors"
+                  className="flex items-center justify-between rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 p-3 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-green-50/50 dark:hover:bg-green-950/20 hover:border-mantis-green-border dark:hover:border-mantis-green-border cursor-pointer transition-colors"
                 >
                   <span className="truncate max-w-[150px]">{link.name}</span>
-                  <span className="text-[10px] text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-1.5 py-0.5 rounded">
                     Page {link.page}
                   </span>
                 </div>
@@ -122,17 +122,17 @@ export default function DiagnosticsPage() {
           </div>
 
           {/* Suggested Actions Checklist */}
-          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <h3 className="font-display font-bold text-slate-800 text-sm border-b border-slate-100 pb-3">Suggested Actions</h3>
+          <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm">
+            <h3 className="font-display font-bold text-slate-800 dark:text-slate-200 text-sm border-b border-slate-100 dark:border-slate-800 pb-3">Suggested Actions</h3>
             <div className="mt-4 flex flex-col gap-3">
               {suggestedActions.map((action, idx) => (
                 <label
                   key={idx}
-                  className="flex items-start gap-2.5 rounded-lg border border-slate-100 bg-slate-50/50 p-3 text-xs font-medium text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors"
+                  className="flex items-start gap-2.5 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 p-3 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-950 cursor-pointer transition-colors"
                 >
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-3.5 w-3.5 rounded border-slate-300 text-mantis-green focus:ring-mantis-green"
+                    className="mt-0.5 h-3.5 w-3.5 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-mantis-green focus:ring-mantis-green"
                   />
                   <span>{action}</span>
                 </label>
@@ -140,7 +140,7 @@ export default function DiagnosticsPage() {
             </div>
             
             {/* View Full Manual Link */}
-            <div className="mt-6 border-t border-slate-100 pt-4 text-center">
+            <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-4 text-center">
               <Link
                 href={`/products/${initialProduct}`}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-mantis-green hover:text-mantis-green-dark transition-colors"
@@ -155,5 +155,17 @@ export default function DiagnosticsPage() {
         </aside>
       </div>
     </div>
+  );
+}
+
+export default function DiagnosticsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-[400px] items-center justify-center text-sm font-semibold text-slate-400">
+        Loading Diagnostics Assistant...
+      </div>
+    }>
+      <DiagnosticsContent />
+    </Suspense>
   );
 }
