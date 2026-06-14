@@ -1,88 +1,107 @@
 # Mantis - AI-Powered Support for Every Product You Own
 
-Mantis is an intelligent support and diagnostics portal built for a 24-hour hackathon. It allows companies to list their products and upload manuals, and gives users access to an interactive, technician-style AI Diagnostic Assistant to troubleshoot and repair equipment systematically.
+## 📖 Project Overview
 
-## 🛠️ Diagnostics Architecture Flow
+Mantis is a **full‑stack AI‑driven support portal** for product manuals and diagnostics. The architecture is split into two independent services:
 
-<img src="docs/image.png" alt="Diagnostics Architecture Flow" width="300" />
+- **Backend (Elysia)** – runs on Bun at `http://localhost:8000`. Handles API endpoints, manual storage, and persistence via **Turso** (remote SQLite) with a **local SQLite fallback**.
+- **Frontend (Next.js 16)** – runs on `http://localhost:3000`. Provides a modern UI built with the **Mantis Light‑Green design system**.
+
+> **Architecture diagram** – *(placeholder, see `docs/ARCHITECTURE.md` for a high‑level diagram)*
 
 ---
 
-## 💻 Tech Stack & Versions
+## 🗂️ Technical Stack
 
-* **Frontend:** Next.js `16.2.9` (App Router, TypeScript, React 19)
-* **Styling:** Tailwind CSS `v4.3` (CSS-first configuration)
-* **Backend:** Elysia `1.4.28` (running on Bun)
-* **Runtime & Package Manager:** Bun `v1.3.14`
+- **Frontend:** Next.js 16.2.9 (App Router, TypeScript, React 19)
+- **Styling:** Tailwind CSS v4.3, custom design tokens for the Mantis Light‑Green theme.
+- **Backend:** Elysia 1.4.28 (Bun runtime)
+- **Persistence:** Turso client (`@libsql/client`) with SQLite fallback (`mantis.db`).
+- **Runtime & Package Manager:** Bun v1.3.14.
+
+---
+
+## 📦 Backend Persistence
+
+The backend now stores manual metadata in a Turbosql database. Configuration is driven by two environment variables:
+
+```bash
+TURSO_URL="<your-turso-database-url>"
+TURSO_AUTH_TOKEN="<your-auth-token>"
+```
+
+If these variables are missing or the Turso connection fails (e.g., unauthorized), the server automatically falls back to a local SQLite file located at `mantis.db` in the project root.
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/upload-manual` | Upload a product manual (multipart `productId` + `file`). Stores metadata in the DB and triggers MOSS indexing. |
+| `GET`  | `/api/manuals` | Retrieve a list of uploaded manuals with their `productId` and file info. |
+| `GET`  | `/diagnostics` | Health‑check endpoint used by the frontend diagnostics chat. |
+
+---
+
+## ⚙️ Development Setup
+
+### Backend
+```bash
+cd backend
+bun install
+bun run dev   # starts Elysia on http://localhost:8000
+```
+
+### Frontend
+```bash
+cd frontend
+bun install
+bun dev        # starts Next.js on http://localhost:3000
+```
+
+Both services use hot‑reloading – changes are reflected instantly.
 
 ---
 
 ## 🎨 Design System
 
-Mantis uses a modern, light tech-green aesthetic:
-* **Background:** Soft Slate (`#f8fafc`)
-* **Surfaces:** True White (`#ffffff`) with subtle rounded borders (`rounded-2xl` / `rounded-3xl`)
-* **Accent Green:** Kelly Green (`#16a34a`) / Hover (`#15803d`)
-* **Typography:** `Plus Jakarta Sans` for headers, `Manrope` for body and chat.
+Mantis follows the **Mantis Light‑Green** design system:
+
+- **Background:** `bg-slate-50` (`#f8fafc`)
+- **Surfaces:** `bg-white` with `border-slate-200/80` and rounded corners (`rounded-2xl`, `rounded-3xl`).
+- **Primary Accent:** `#16a34a` (`bg-mantis-green`).
+- **Hover Accent:** `#15803d` (`bg-mantis-green-dark`).
+- **Active Tint:** `#f0fdf4` (`bg-mantis-green-light`).
+- **Typography:** `Plus Jakarta Sans` for headings, `Manrope` for body text.
 
 ---
 
-## 📂 Project Structure
+## 🧪 Testing
 
-```
-Mantis/
-├── backend/               # Elysia Backend (Bun runtime)
-│   ├── src/
-│   │   └── index.ts       # Server entry point with CORS and mock APIs (Port 8000)
-│   └── package.json
-│
-├── frontend/              # Next.js Frontend
-│   ├── public/            # Static assets (logos, product photography)
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx          # Main Support Dashboard page
-│   │   │   ├── layout.tsx        # Google Fonts injection & Navbar shell
-│   │   │   ├── globals.css       # Tailwind imports & theme variables
-│   │   │   ├── diagnostics/      # Diagnostics chat view
-│   │   │   ├── dashboard/        # Manual upload page
-│   │   │   └── products/         # Marketplace catalog & details
-│   │   └── components/
-│   │       ├── Navbar.tsx        # Header Navigation bar
-│   │       └── DiagnosticAssistant.tsx # Active chat technician widget
-│   └── package.json
-│
-└── docs/
-    └── AGENTS.md          # Workspace rules & guidelines for AI coding agents
-```
-
----
-
-## 🚀 Getting Started
-
-Ensure you have [Bun](https://bun.sh) installed.
-
-### 1. Run the Backend API
-Navigate to the `backend` folder, install dependencies, and start the development server:
 ```bash
+# Backend tests
 cd backend
-bun install
-bun run dev
-```
-The Elysia API will boot up on **`http://localhost:8000`**.
+bun test
 
-### 2. Run the Next.js Frontend
-Navigate to the `frontend` folder, install dependencies, and start the Next.js dev server:
-```bash
+# Frontend lint & tests (if added later)
 cd frontend
-bun install
-bun dev
+bun lint
 ```
-The React application will boot up on **`http://localhost:3000`**.
-
-### 3. Open in Browser
-Open your browser and navigate to **`http://localhost:3000`** to view the application.
 
 ---
 
-## 🤖 AI Agent Integration
-This project is fully context-engineered for AI coding assistants. Standard agent instructions, behavior guidelines (acting as a Teacher/Architect), and design token specifications are stored inside [docs/AGENTS.md](file:///c:/projects/Mantis/docs/AGENTS.md).
+## 📚 Additional Docs
+
+- **Architecture Overview:** `docs/ARCHITECTURE.md`
+- **Agent Guidelines:** `docs/AGENTS.md`
+
+---
+
+## 🚀 Quick Start
+
+1. Set `TURSO_URL` and `TURSO_AUTH_TOKEN` (optional – development falls back to SQLite).
+2. Run the backend and frontend as described above.
+3. Open `http://localhost:3000` and start uploading manuals via the Dashboard.
+
+Enjoy building with Mantis!

@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend Documentation
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📂 Project Structure
+```
+frontend/
+├─ src/
+│  ├─ app/
+│  │   ├─ layout.tsx            # Global layout with Google Fonts and Navbar
+│  │   ├─ globals.css            # Tailwind imports & design tokens
+│  │   ├─ dashboard/
+│  │   │   └─ page.tsx          # Manual upload UI (handles file upload, product selection)
+│  │   ├─ diagnostics/
+│  │   │   └─ page.tsx          # AI Diagnostic Assistant chat UI
+│  │   └─ products/
+│  │       └─ page.tsx          # Marketplace product catalog
+│  └─ components/
+│      ├─ Navbar.tsx           # Header navigation component
+│      └─ DiagnosticAssistant.tsx # Chat widget component
+├─ public/                     # Static assets (logos, images)
+├─ package.json
+└─ bun.lockb
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Design System
+The UI follows the **Mantis Light‑Green** design system (see `docs/AGENTS.md` for token definitions):
+- **Background:** `bg-slate-50` (`#f8fafc`)
+- **Cards:** `bg-white` with `border-slate-200/80` and rounded corners (`rounded-2xl` / `rounded-3xl`).
+- **Primary Accent:** `#16a34a` (`bg-mantis-green`).
+- **Hover Accent:** `#15803d` (`bg-mantis-green-dark`).
+- **Active Tint:** `#f0fdf4` (`bg-mantis-green-light`).
+- **Typography:** `Plus Jakarta Sans` for headings, `Manrope` for body text.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Development Setup
+```bash
+cd frontend
+bun install          # Install dependencies (Next.js, Tailwind, React, etc.)
+bun dev               # Starts the dev server at http://localhost:3000
+```
+The frontend proxies API calls to the backend (`http://localhost:8000`). Ensure the backend is running before using the dashboard.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📡 API Integration
+- `POST /api/upload-manual` – Used by the dashboard to upload product manuals.
+- `GET /api/manuals` – Fetches the list of uploaded manuals and displays them on the dashboard.
+- `GET /diagnostics` – Health‑check endpoint for the AI diagnostic chat.
 
-## Learn More
+## 🧪 Testing & Linting
+```bash
+bun lint               # Runs ESLint (includes custom rule for requestAnimationFrame usage)
+# Frontend tests can be added with your preferred framework (e.g., Vitest, Jest)
+```
+All lint errors must be resolved before committing.
 
-To learn more about Next.js, take a look at the following resources:
+## 📚 Additional Docs
+- **Architecture Overview:** `docs/ARCHITECTURE.md`
+- **Agent Guidelines:** `docs/AGENTS.md`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Quick Start
+1. Set up the backend (see `backend/README.md`).
+2. Run the frontend dev server.
+3. Open `http://localhost:3000` and use the Dashboard to upload manuals.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enjoy building with the sleek Mantis Light‑Green UI!
