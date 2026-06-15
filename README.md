@@ -1,3 +1,10 @@
+# Team: Tech Nerds
+
+- Sparsh Khanna
+- Sahil Gupta
+- Gourish Julka
+- Meharwan Singh
+
 # Mantis — AI-Powered Support for Every Product You Own
 
 ## 👥 Team Details
@@ -219,7 +226,7 @@ For detailed implementation breakdowns, refer to:
 | `DELETE` | `/api/products/:id` | Company Member | Delete product + cleanup MOSS index |
 
 ### Manuals & Resources
-
+  
 | Method   | Endpoint                                  | Auth           | Description                   |
 | -------- | ----------------------------------------- | -------------- | ----------------------------- |
 | `POST`   | `/api/upload-manual`                      | Company Member | Upload PDF + index in MOSS    |
@@ -389,6 +396,62 @@ for (const idx of oldProductIndexes) {
   await client.deleteIndex(idx.name);
 }
 ```
+
+## 📖 Usage Guide
+
+This guide details how to navigate and use the Mantis platform as a **Customer / End-User** and as a **Company Administrator**.
+
+---
+
+### 🛍️ 1. The Customer Journey (Troubleshooting a Product)
+
+#### Step A: Browse & Search the Marketplace
+1. Navigate to the **Products** page (`/products`).
+2. Use the search bar at the top to filter products by title, tags, or description.
+3. Click on any product card (e.g., *Electric Scooter*) to view its details. Here you will find its description, manufacturer, and uploaded resources (manuals, videos, links).
+
+#### Step B: Launch the AI Diagnostic Assistant
+1. Click the **Diagnose** button on the product details page, or navigate directly to `/diagnostics`.
+2. A persistent conversation will be automatically initialized for you, titled *"Diagnosing: [Product Name]"*.
+3. Type in the issue you are experiencing (e.g., *"My scooter horn is silent"* or *"The engine light is blinking red"*).
+
+#### Step C: Follow the Troubleshooting Guidance
+1. **Systematic Elimination:** The AI Assistant behaves like a technician—it won't just dump manual text. It will query the manuals, read the context, and ask you specific follow-up questions to isolate variables.
+2. **Follow Instructions:** Provide answers to the assistant's questions (e.g., *"The headlight works, but the display is off"*).
+3. **Inspect Interactive References:**
+   * Look at the **Right Sidebar** to see the suggested action checklist and raw source excerpts pulled from the manufacturer's manual.
+   * Verify the suggestions using the page references provided by the engine.
+
+---
+
+### 🏢 2. The Company/Admin Journey (Managing Products & Knowledge)
+
+To upload manuals and manage products, you must log in as a Company or System Administrator.
+
+#### Step A: Log In with Seeded Accounts
+1. Go to the login page (`/login`).
+2. Enter one of the seeded credentials:
+
+| Account Role | Email Address | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| **Superadmin** | `admin@mantis.demo` | `admin123456` | Manage all companies, add/delete any product, full database control. |
+| **Company Admin** | `company@mantis.demo` | `company123456` | Manage products and upload manuals for "Demo Outdoors Co." |
+
+#### Step B: Add a Product & Upload a Manual
+1. Once logged in, navigate to the **Dashboard** (`/dashboard`).
+2. Click **Create Product** and fill in the details: Title, Description, Tags, and Product Image.
+3. Once the product is created, click **Upload Manual** on the product card.
+4. Select a product manual PDF and click upload.
+   * **Under the Hood:** The backend will upload the PDF to Supabase Storage, parse the text per page, chunk it into ~300-token blocks, and index those chunks with metadata directly into the shared MOSS `"manuals"` vector search index.
+
+#### Step C: Manage Supplementary Resources
+1. From the product detail page, administrators can link supplementary resources such as:
+   * Video walkthroughs (e.g., YouTube tutorial links).
+   * External web links (e.g., spare parts ordering pages).
+   * Safe-handling document attachments.
+2. These resources will instantly populate the user-facing product page.
+
+#### DEMO LINK: https://drive.google.com/file/d/1Vav72ZL5QHeWSpSI1Fi0Oqn97HEPfEQk/view?usp=drivesdk
 
 ## Upgrading from Previous Versions
 
