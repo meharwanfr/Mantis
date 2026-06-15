@@ -444,7 +444,7 @@ To upload manuals and manage products, you must log in as a Company or System Ad
    * Safe-handling document attachments.
 2. These resources will instantly populate the user-facing product page.
 
-#### DEMO LINK: https://drive.google.com/drive/folders/189KN0ODrj5B4HDyIrBlerC_lo1esiaGo
+#### DEMO LINK: https://drive.google.com/file/d/1Vav72ZL5QHeWSpSI1Fi0Oqn97HEPfEQk/view?usp=drivesdk
 
 ## Upgrading from Previous Versions
 
