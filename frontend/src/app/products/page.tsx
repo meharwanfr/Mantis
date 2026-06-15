@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 interface DBProduct {
   id: string;
   title?: string;
@@ -16,19 +18,19 @@ interface DBProduct {
 }
 
 const iconShapes = [
-  <svg key="scooter" className="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+  <svg key="scooter" className="h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
     <circle cx="6" cy="18" r="3" /><circle cx="18" cy="18" r="3" />
     <path d="M6 15h11a1 1 0 001-1V5a1 1 0 00-1-1H9" />
   </svg>,
-  <svg key="cube" className="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+  <svg key="cube" className="h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
     <rect x="3" y="3" width="18" height="18" rx="2" />
     <circle cx="12" cy="12" r="4" />
   </svg>,
-  <svg key="chip" className="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+  <svg key="chip" className="h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
     <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
     <rect x="9" y="9" width="6" height="6" rx="1" />
   </svg>,
-  <svg key="box" className="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
+  <svg key="box" className="h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1">
     <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
   </svg>,
 ];
@@ -37,7 +39,7 @@ function ProductsCatalogContent() {
   const searchParams = useSearchParams();
   const { role, companies, getCompanyName, getAccessToken, refreshCompanies } = useAuth();
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [dbProducts, setDbProducts] = useState<DBProduct[]>([]);
   const [selectedCompanyFilter, setSelectedCompanyFilter] = useState<string>("all");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -51,7 +53,7 @@ function ProductsCatalogContent() {
       const token = await getAccessToken();
       const headers: Record<string, string> = {};
       if (token) headers["Authorization"] = `Bearer ${token}`;
-      const res = await fetch("http://localhost:8000/api/products", { headers });
+      const res = await fetch(`${API_BASE}/api/products`, { headers });
       if (res.ok) {
         setDbProducts(await res.json());
       }
@@ -82,7 +84,7 @@ function ProductsCatalogContent() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/products/${productId}`, {
+      const res = await fetch(`${API_BASE}/api/products/${productId}`, {
         method: "PUT",
         headers,
         body: JSON.stringify({
@@ -107,7 +109,7 @@ function ProductsCatalogContent() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/products/${productId}`, {
+      const res = await fetch(`${API_BASE}/api/products/${productId}`, {
         method: "DELETE",
         headers,
       });
@@ -135,49 +137,48 @@ function ProductsCatalogContent() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-slate-200/60 dark:border-slate-800 pb-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6">
         <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-slate-50">Product Marketplace</h1>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-            Browse registered products, download manuals, and start active diagnostics.
+          <h1 className="font-display text-2xl font-bold text-[var(--foreground)]">Products</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Browse registered products, download manuals, and start diagnostics.
           </p>
         </div>
 
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full sm:w-72">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg className="h-4 w-4 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
           <input
             type="search"
             placeholder="Search products..."
-            className="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-2 pl-9 pr-4 text-sm outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-mantis-green focus:ring-1 focus:ring-mantis-green dark:text-white"
+            className="w-full rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] py-2 pl-9 pr-4 text-sm outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-mantis-green focus:ring-1 focus:ring-mantis-green/30 dark:text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2 items-center">
-        <div className="ml-auto">
-          <select
-            value={selectedCompanyFilter}
-            onChange={(e) => setSelectedCompanyFilter(e.target.value)}
-            className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-1.5 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
-          >
-            <option value="all">All Companies</option>
-            <option value="none">Unassociated</option>
-            {companies.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-        </div>
+      <div className="flex items-center gap-2 pb-4">
+        <select
+          value={selectedCompanyFilter}
+          onChange={(e) => setSelectedCompanyFilter(e.target.value)}
+          className="rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] px-3 py-1.5 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
+        >
+          <option value="all">All Companies</option>
+          <option value="none">Unassociated</option>
+          {companies.map(c => (
+            <option key={c.id} value={c.id}>{c.name}</option>
+          ))}
+        </select>
+        <span className="text-xs text-slate-400 dark:text-slate-500 ml-auto">{filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""}</span>
       </div>
 
       {deletingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="rounded-2xl border border-red-200/80 dark:border-red-900/30 bg-white dark:bg-slate-900 p-6 shadow-xl max-w-sm w-full mx-4">
+          <div className="rounded-2xl border border-red-200/80 dark:border-red-900/30 bg-[var(--card-bg)] p-6 shadow-xl max-w-sm w-full mx-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/40">
                 <svg className="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -185,135 +186,105 @@ function ProductsCatalogContent() {
                 </svg>
               </div>
               <div>
-                <h3 className="font-display font-bold text-slate-800 dark:text-slate-200">Delete Product</h3>
+                <h3 className="font-display font-bold text-[var(--foreground)]">Delete Product</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  This will permanently delete the product, its manual PDF, and all MOSS search index entries.
+                  This will permanently delete the product and its manual.
                 </p>
               </div>
             </div>
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => setDeletingId(null)}
-                className="rounded-lg border border-slate-200/80 dark:border-slate-800 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                className="rounded-xl border border-[var(--card-border)] px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDelete(deletingId)}
-                className="rounded-lg bg-red-500 px-4 py-2 text-xs font-semibold text-white hover:bg-red-600 transition-colors cursor-pointer"
+                className="rounded-xl bg-red-500 px-4 py-2 text-xs font-semibold text-white hover:bg-red-600 transition-colors cursor-pointer"
               >
-                Delete Permanently
+                Delete
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredProducts.map((product, idx) => {
           const editable = canEdit(product);
           const isEditing = editingId === product.id;
           return (
             <div
               key={product.id}
-              className="flex flex-col rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm hover:shadow-md dark:hover:shadow-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700 transition-all group relative"
+              className="flex flex-col rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-5 shadow-sm hover:shadow-md dark:shadow-black/20 hover:border-mantis-green/30 dark:hover:border-mantis-green/30 transition-all group"
             >
-              {product.company_id ? (
-                <span className="absolute top-3 right-3 inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 px-2 py-0.5 text-[9px] font-bold text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-600/10">
-                  {getCompanyName(product.company_id) || 'Associated'}
-                </span>
-              ) : (
-                <span className="absolute top-3 right-3 inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[9px] font-bold text-slate-500 dark:text-slate-400">
-                  Unassociated
-                </span>
-              )}
-
-              <div className="flex aspect-video w-full items-center justify-center rounded-xl bg-slate-50 dark:bg-slate-950 overflow-hidden mb-4 mt-2">
+              <div className="flex aspect-[4/3] w-full items-center justify-center rounded-xl bg-[var(--section-bg)] overflow-hidden mb-3">
                 {product.image_url ? (
                   <img src={product.image_url} alt={product.title || product.id} className="h-full w-full object-cover" />
                 ) : (
-                  <div className="flex items-center justify-center p-4">
-                    {iconShapes[idx % iconShapes.length]}
-                  </div>
+                  <div className="flex items-center justify-center p-4">{iconShapes[idx % iconShapes.length]}</div>
                 )}
               </div>
 
               {isEditing ? (
-                <div className="space-y-3 flex-1 flex flex-col">
-                  <h2 className="font-display text-lg font-bold text-slate-800 dark:text-slate-200">
-                    {product.title || product.id}
-                  </h2>
+                <div className="space-y-2 flex-1 flex flex-col">
                   <input
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     placeholder="Product title"
-                    className="w-full rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
+                    className="w-full rounded-xl border border-[var(--card-border)] bg-[var(--section-bg)] px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
                   />
                   <textarea
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
                     placeholder="Product description"
                     rows={2}
-                    className="w-full rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white resize-none"
+                    className="w-full rounded-xl border border-[var(--card-border)] bg-[var(--section-bg)] px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white resize-none"
                   />
                   <input
                     type="text"
                     value={editTags}
                     onChange={(e) => setEditTags(e.target.value)}
                     placeholder="Tags (comma-separated)"
-                    className="w-full rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
+                    className="w-full rounded-xl border border-[var(--card-border)] bg-[var(--section-bg)] px-3 py-2 text-xs font-semibold outline-none focus:border-mantis-green dark:text-white"
                   />
-                  <div className="mt-auto flex gap-2">
-                    <button
-                      onClick={() => handleEdit(product.id)}
-                      className="flex-1 rounded-lg bg-mantis-green px-4 py-2 text-xs font-semibold text-white hover:bg-mantis-green-dark transition-colors cursor-pointer"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="flex-1 rounded-lg border border-slate-200/80 dark:border-slate-800 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                    >
-                      Cancel
-                    </button>
+                  <div className="mt-auto flex gap-2 pt-2">
+                    <button onClick={() => handleEdit(product.id)}
+                      className="flex-1 rounded-xl bg-mantis-green px-4 py-2 text-xs font-semibold text-white hover:bg-mantis-green-dark transition-colors cursor-pointer">Save</button>
+                    <button onClick={() => setEditingId(null)}
+                      className="flex-1 rounded-xl border border-[var(--card-border)] px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">Cancel</button>
                   </div>
                 </div>
               ) : (
                 <div className="flex-1 flex flex-col">
-                  <h2 className="mt-3 font-display text-lg font-bold text-slate-800 dark:text-slate-200 group-hover:text-mantis-green transition-colors leading-snug line-clamp-1">
+                  <h2 className="font-display text-base font-bold text-[var(--foreground)] group-hover:text-mantis-green transition-colors leading-snug line-clamp-1">
                     {product.title || product.id}
                   </h2>
-
-                  {product.description && (
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 line-clamp-2">
+                  {product.description ? (
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400 leading-relaxed flex-1 line-clamp-2">
                       {product.description}
                     </p>
+                  ) : (
+                    <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500 italic flex-1">No description</p>
                   )}
-
-                  {!product.description && (
-                    <p className="mt-2 text-xs text-slate-400 dark:text-slate-500 italic leading-relaxed flex-1">
-                      No description
-                    </p>
-                  )}
-
-                  <div className="mt-6 flex gap-3">
+                  <div className="mt-4 flex gap-2">
                     <Link
                       href={`/products/${product.id}`}
-                      className="flex-1 flex h-10 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                      className="flex-1 flex h-9 items-center justify-center rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-[0.98]"
                     >
-                      View Details
+                      Details
                     </Link>
                     <Link
                       href={`/diagnostics?product=${product.id}`}
-                      className="flex-1 flex h-10 items-center justify-center rounded-lg bg-mantis-green text-xs font-semibold text-white hover:bg-mantis-green-dark transition-colors text-center"
+                      className="flex-1 flex h-9 items-center justify-center rounded-xl bg-mantis-green text-xs font-semibold text-white hover:bg-mantis-green-dark transition-all active:scale-[0.98]"
                     >
                       Diagnose
                     </Link>
                   </div>
-
                   {editable && (
-                    <div className="mt-3 flex gap-2">
+                    <div className="mt-2 flex gap-2">
                       <button
                         onClick={() => {
                           setEditingId(product.id);
@@ -321,13 +292,13 @@ function ProductsCatalogContent() {
                           setEditDescription(product.description || "");
                           setEditTags(product.tags?.join(", ") || "");
                         }}
-                        className="flex-1 rounded-lg border border-slate-200/80 dark:border-slate-800 py-1.5 text-[10px] font-semibold text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        className="flex-1 rounded-xl border border-[var(--card-border)] py-1.5 text-[10px] font-semibold text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => setDeletingId(product.id)}
-                        className="flex-1 rounded-lg border border-red-200 dark:border-red-900/30 text-red-500 py-1.5 text-[10px] font-semibold hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
+                        className="flex-1 rounded-xl border border-red-200 dark:border-red-900/30 text-red-500 py-1.5 text-[10px] font-semibold hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
                       >
                         Delete
                       </button>
@@ -341,11 +312,11 @@ function ProductsCatalogContent() {
 
         {filteredProducts.length === 0 && (
           <div className="col-span-full py-16 text-center">
-            <svg className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 className="mt-4 text-base font-bold text-slate-700 dark:text-slate-300">No products found</h3>
-            <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">Create a product from the dashboard to get started.</p>
+            <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">Try a different search or check back later.</p>
           </div>
         )}
       </div>
@@ -356,8 +327,8 @@ function ProductsCatalogContent() {
 export default function ProductsCatalog() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-[400px] items-center justify-center text-sm font-semibold text-slate-400">
-        Loading Products Catalog...
+      <div className="flex min-h-[400px] items-center justify-center">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-mantis-green border-t-transparent" />
       </div>
     }>
       <ProductsCatalogContent />

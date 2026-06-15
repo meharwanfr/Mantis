@@ -17,6 +17,10 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Mantis - AI-Powered Support for Every Product You Own",
   description: "Get instant, accurate answers to any product issue. Upload manuals, ask questions, and let Mantis guide you.",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

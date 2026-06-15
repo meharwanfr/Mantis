@@ -3,25 +3,31 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Mantis Kelly-Green Design Palette */
   --color-mantis-green: #16a34a;
   --color-mantis-green-dark: #15803d;
   --color-mantis-green-light: #f0fdf4;
   --color-mantis-green-border: #dcfce7;
 
-  /* Modern Typography Mappings */
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  --card-bg: #ffffff;
+  --card-border: #e5e5e7;
+  --nav-blur: rgba(255, 255, 255, 0.8);
+  --section-bg: #f5f5f7;
 }
 
 .dark {
-  --background: #090d16;
-  --foreground: #f8fafc;
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --card-bg: #1c1c1e;
+  --card-border: #38383a;
+  --nav-blur: rgba(0, 0, 0, 0.8);
+  --section-bg: #111113;
 }
 
 body {
@@ -32,4 +38,23 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: var(--foreground);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
 }

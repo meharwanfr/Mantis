@@ -56,8 +56,8 @@ export default function LoginPage() {
       router.push("/dashboard");
     } else {
       setError("Check your email to confirm your account.");
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   return (

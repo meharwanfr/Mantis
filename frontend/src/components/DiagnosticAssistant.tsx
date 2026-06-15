@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/+$/, "");
+
 interface Message {
   id: string;
   sender: "ai" | "user";
@@ -60,7 +62,7 @@ export default function DiagnosticAssistant({
       const token = await getAccessToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
-      const res = await fetch("http://localhost:8000/api/diagnose", {
+      const res = await fetch(`${API_BASE}/api/diagnose`, {
         method: "POST",
         headers,
         body: JSON.stringify({ productId, query: userText }),

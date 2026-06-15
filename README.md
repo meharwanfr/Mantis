@@ -1,11 +1,35 @@
 # Mantis — AI-Powered Support for Every Product You Own
 
-Mantis is a full-stack AI diagnostics platform. Upload a product manual (PDF), and Mantis indexes it in real‑time for semantic search, then lets you diagnose problems through an AI chat assistant that references your specific product documentation.
+## 👥 Team Details
+- **Team Name:** [Your Team Name Here]
+- **Team Members:** Sparsh Khanna ([khannasparsh0001@gmail.com](mailto:khannasparsh0001@gmail.com)), [Add Other Members Here]
 
-## Architecture
+## 📝 Project Overview
+Mantis is a full-stack AI diagnostics platform. Upload a product manual (PDF), and Mantis indexes it in real‑time for semantic search, then lets you diagnose problems through an AI chat assistant that references your specific product documentation. It acts like a digital support technician or mechanic, guiding users through troubleshooting steps step-by-step using manufacturer-provided manuals rather than generic web search.
 
-```
-┌──────────────┐       ┌──────────────┐       ┌───────────┐       ┌──────────────┐
+## 🚀 Features and Functionality
+- **Product Marketplace:** A browsable catalog of all products registered on the platform with search capabilities.
+- **Support Material Repositories:** Upload support manuals (PDFs), images, links, or videos for specific products.
+- **Intelligent Diagnostic Assistant:** A multi-turn diagnostic chat assistant that queries the shared product document index, leverages session history, and provides structured suggestions.
+- **Shared Index Architecture:** Efficiently stores all document chunks in a single MOSS index with metadata filters to prevent free-tier limits.
+- **Persisted Conversations:** Conversations are saved in a Supabase Postgres database per user, allowing users to return to their diagnostic sessions later.
+
+## 🛠️ Tech Stack Used
+| Layer | Technology | Version |
+|---|---|---|
+| **Frontend** | Next.js (App Router, TypeScript, React) | 16.2.9 |
+| **Styling** | Tailwind CSS | v4.3 |
+| **Backend** | Elysia (Bun runtime) | 1.4.28 |
+| **Database** | Supabase (Postgres) | — |
+| **Storage** | Supabase Storage (product-assets bucket) | — |
+| **Auth** | Supabase SSR (Google OAuth + Email/Password) | — |
+| **Semantic Search** | MOSS (`@moss-dev/moss`) | ^1.1.0 |
+| **AI Engine** | OpenCode (mimo-v2.5-free) | — |
+| **PDF Parsing** | pdf-parse | 2.4.5 |
+| **Runtime** | Bun | 1.3.14 |
+
+## 🏗️ Architecture
+![┌──────────────┐       ┌──────────────┐       ┌───────────┐       ┌──────────────┐
 │   Frontend   │──────▶│   Backend    │──────▶│  Supabase │       │    MOSS      │
 │  Next.js 16  │◀──────│  Elysia/Bun  │◀──────│  (Postgres │       │  (Semantic   │
 │  :3000       │  REST │  :8000       │  Auth  │  + Storage)│       │   Search)    │
@@ -13,29 +37,13 @@ Mantis is a full-stack AI diagnostics platform. Upload a product manual (PDF), a
                               │                                          │
                               │◀──── OpenCode (AI Diagnostics) ─────────▶│
                               └──────────────────────────────────────────┘
-                              │◀──── MOSS (Semantic Search) ─────────────┘
-```
+                              │◀──── MOSS (Semantic Search) ─────────────┘](architecture_diagram.png)
 
-- **Backend** (Elysia on Bun) handles API routes, file storage, authentication, and orchestrates MOSS + OpenCode
-- **Frontend** (Next.js 16) provides the dashboard, product catalog, diagnostics chat, and company management
-- **Supabase** serves as database (Postgres), file storage (PDFs/images), and authentication provider
-- **MOSS** provides real-time semantic search on uploaded manuals — queries run in-memory in ~10ms
-- **OpenCode** powers the AI diagnostic engine with product-specific context
-
-## Tech Stack
-
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Frontend | Next.js (App Router, TypeScript, React) | 16.2.9 |
-| Styling | Tailwind CSS | v4.3 |
-| Backend | Elysia (Bun runtime) | 1.4.28 |
-| Database | Supabase (Postgres) | — |
-| Storage | Supabase Storage (product-assets bucket) | — |
-| Auth | Supabase SSR (Google OAuth + Email/Password) | — |
-| Semantic Search | MOSS (`@moss-dev/moss`) | ^1.1.0 |
-| AI Engine | OpenCode (mimo-v2.5-free) | — |
-| PDF Parsing | pdf-parse | 2.4.5 |
-| Runtime | Bun | 1.3.14 |
+- **Backend** (Elysia on Bun) handles API routes, file storage, authentication, and orchestrates MOSS + OpenCode.
+- **Frontend** (Next.js 16) provides the dashboard, product catalog, diagnostics chat, and company management.
+- **Supabase** serves as database (Postgres), file storage (PDFs/images), and authentication provider.
+- **MOSS** provides real-time semantic search on uploaded manuals — queries run in-memory in ~10ms.
+- **OpenCode** powers the AI diagnostic engine with product-specific context.
 
 ## Prerequisites
 
@@ -57,7 +65,7 @@ cd backend && bun install && cd ..
 
 # Install frontend
 cd frontend && bun install && cd ..
-```
+````
 
 ### 2. Configure Supabase
 
@@ -134,13 +142,35 @@ bun run seed
 
 Creates two demo accounts for local development:
 
-| Account | Email | Password | Role |
-|---------|-------|----------|------|
-| Superadmin | `admin@mantis.demo` | `admin123456` | Global admin — full access |
+| Account       | Email                 | Password        | Role                         |
+| ------------- | --------------------- | --------------- | ---------------------------- |
+| Superadmin    | `admin@mantis.demo`   | `admin123456`   | Global admin — full access   |
 | Company Admin | `company@mantis.demo` | `company123456` | Admin of "Demo Outdoors Co." |
 
 The seed script also creates a demo company **"Demo Outdoors Co."** (`slug: demo-outdoors`)
 and assigns the company admin to it. It is idempotent — safe to run multiple times.
+
+## 📖 Usage Guide
+1. **Explore Products:** Visit `http://localhost:3000/products` to browse the catalog of products.
+2. **Access Admin Panel / Dashboard:**
+   * Login at `http://localhost:3000/login` using one of the seeded accounts (e.g., `admin@mantis.demo` with password `admin123456`).
+   * Go to the **Dashboard** to register a new product or upload a PDF manual (this will automatically parse, chunk, and index the manual into MOSS).
+3. **Run AI Diagnostics:**
+   * Go to `http://localhost:3000/diagnostics` or click **Diagnose** on a product card.
+   * Type in a product issue (e.g. *"My scooter horn is not working"*).
+   * The assistant will perform a hybrid search, retrieve context from the manual, and guide you through troubleshooting.
+
+## 🖼️ Screenshots & Media
+- **Platform Architecture Diagram:**
+  ![Mantis Architecture Diagram](architecture_diagram.png)
+- **Demo Video Link:** *[Insert Demo Video Link Here]*
+
+## 💡 Additional Information for Evaluation
+For detailed implementation breakdowns, refer to:
+- **MOSS Integration Details:** (See the section below)
+- **API Reference:** (See the section below)
+- **Auth Model:** (See the section below)
+- **Design System:** (See the section below)
 
 ## How It Works
 
@@ -181,54 +211,54 @@ and assigns the company admin to it. It is idempotent — safe to run multiple t
 
 ### Products
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/api/products` | Optional | List all products |
-| `POST` | `/api/products` | Company Member | Create a product |
-| `PUT` | `/api/products/:id` | Company Member | Update title, description, tags |
+| Method   | Endpoint            | Auth           | Description                         |
+| -------- | ------------------- | -------------- | ----------------------------------- |
+| `GET`    | `/api/products`     | Optional       | List all products                   |
+| `POST`   | `/api/products`     | Company Member | Create a product                    |
+| `PUT`    | `/api/products/:id` | Company Member | Update title, description, tags     |
 | `DELETE` | `/api/products/:id` | Company Member | Delete product + cleanup MOSS index |
 
 ### Manuals & Resources
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `POST` | `/api/upload-manual` | Company Member | Upload PDF + index in MOSS |
-| `GET` | `/api/manuals` | Any Auth | List uploaded manuals |
-| `GET` | `/api/products/:id/resources` | Optional | List product resources |
-| `POST` | `/api/products/:id/resources` | Company Member | Add image/video/link resource |
-| `DELETE` | `/api/products/:id/resources/:resourceId` | Company Member | Delete a resource |
+| Method   | Endpoint                                  | Auth           | Description                   |
+| -------- | ----------------------------------------- | -------------- | ----------------------------- |
+| `POST`   | `/api/upload-manual`                      | Company Member | Upload PDF + index in MOSS    |
+| `GET`    | `/api/manuals`                            | Any Auth       | List uploaded manuals         |
+| `GET`    | `/api/products/:id/resources`             | Optional       | List product resources        |
+| `POST`   | `/api/products/:id/resources`             | Company Member | Add image/video/link resource |
+| `DELETE` | `/api/products/:id/resources/:resourceId` | Company Member | Delete a resource             |
 
 ### Conversations
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/api/conversations` | Required | List user's conversations |
-| `POST` | `/api/conversations` | Required | Create a conversation (optional `productId`) |
-| `PATCH` | `/api/conversations/:id` | Required | Update conversation title |
-| `DELETE` | `/api/conversations/:id` | Required | Delete a conversation |
+| Method   | Endpoint                 | Auth     | Description                                  |
+| -------- | ------------------------ | -------- | -------------------------------------------- |
+| `GET`    | `/api/conversations`     | Required | List user's conversations                    |
+| `POST`   | `/api/conversations`     | Required | Create a conversation (optional `productId`) |
+| `PATCH`  | `/api/conversations/:id` | Required | Update conversation title                    |
+| `DELETE` | `/api/conversations/:id` | Required | Delete a conversation                        |
 
 ### Diagnostics
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `POST` | `/api/diagnose` | Optional | Single-shot diagnostic query |
-| `POST` | `/api/ask` | Optional | Chat with session-aware diagnostics |
-| `POST` | `/api/chat/end` | Optional | End a chat session |
+| Method | Endpoint        | Auth     | Description                         |
+| ------ | --------------- | -------- | ----------------------------------- |
+| `POST` | `/api/diagnose` | Optional | Single-shot diagnostic query        |
+| `POST` | `/api/ask`      | Optional | Chat with session-aware diagnostics |
+| `POST` | `/api/chat/end` | Optional | End a chat session                  |
 
 ### Admin
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/api/admin/companies` | Global Admin | List all companies (paginated) |
-| `POST` | `/api/admin/companies` | Global Admin | Create a new company |
-| `POST` | `/api/admin/companies/:id/members` | Global Admin | Assign a user as company admin |
-| `DELETE` | `/api/admin/companies/:id` | Global Admin | Delete a company (fails if products exist) |
+| Method   | Endpoint                           | Auth         | Description                                |
+| -------- | ---------------------------------- | ------------ | ------------------------------------------ |
+| `GET`    | `/api/admin/companies`             | Global Admin | List all companies (paginated)             |
+| `POST`   | `/api/admin/companies`             | Global Admin | Create a new company                       |
+| `POST`   | `/api/admin/companies/:id/members` | Global Admin | Assign a user as company admin             |
+| `DELETE` | `/api/admin/companies/:id`         | Global Admin | Delete a company (fails if products exist) |
 
 ### Health
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/health` | None | Health check |
+| Method | Endpoint  | Auth | Description  |
+| ------ | --------- | ---- | ------------ |
+| `GET`  | `/health` | None | Health check |
 
 ## MOSS Integration Details
 
@@ -270,6 +300,7 @@ All MOSS operations in endpoint handlers are non-fatal — if MOSS fails, endpoi
 ### Caching
 
 The shared index is loaded once with:
+
 - **`cachePath`**: `./.moss-cache` — persists index to disk across server restarts
 - **`autoRefresh`**: true — polls cloud every 120s for updates
 - **Graceful fallback**: If cache directory can't be created, falls back to memory-only
@@ -316,26 +347,26 @@ mantis/
 
 ## Auth Model
 
-| Role | Permissions |
-|------|------------|
-| **Admin** | Full access — create/edit/delete any product, manage all companies, root access |
-| **Company Admin** | Manage their company's members, upload/edit/delete their company's products |
-| **Company Member** | Upload/edit/delete their company's products |
-| **Authenticated User** | View products, run diagnostics |
-| **Anonymous** | View products, run diagnostics (diagnose endpoint) |
+| Role                   | Permissions                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| **Admin**              | Full access — create/edit/delete any product, manage all companies, root access |
+| **Company Admin**      | Manage their company's members, upload/edit/delete their company's products     |
+| **Company Member**     | Upload/edit/delete their company's products                                     |
+| **Authenticated User** | View products, run diagnostics                                                  |
+| **Anonymous**          | View products, run diagnostics (diagnose endpoint)                              |
 
 ## Design System
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `mantis-green` | `#16a34a` | Primary accent |
-| `mantis-green-dark` | `#15803d` | Hover state |
-| `mantis-green-light` | `#f0fdf4` | Active tint |
-| Background | `bg-slate-50` | Page background |
-| Surface | `bg-white` | Cards, modals |
-| Borders | `border-slate-200/80` | Default borders |
-| Heading | `Plus Jakarta Sans` | Display font |
-| Body | `Manrope` | Text font |
+| Token                | Value                 | Usage           |
+| -------------------- | --------------------- | --------------- |
+| `mantis-green`       | `#16a34a`             | Primary accent  |
+| `mantis-green-dark`  | `#15803d`             | Hover state     |
+| `mantis-green-light` | `#f0fdf4`             | Active tint     |
+| Background           | `bg-slate-50`         | Page background |
+| Surface              | `bg-white`            | Cards, modals   |
+| Borders              | `border-slate-200/80` | Default borders |
+| Heading              | `Plus Jakarta Sans`   | Display font    |
+| Body                 | `Manrope`             | Text font       |
 
 ## Testing
 
@@ -353,7 +384,7 @@ Old per-product indexes created before the shared index migration are orphaned. 
 ```ts
 const client = new MossClient(PROJECT_ID, PROJECT_KEY);
 const indexes = await client.listIndexes();
-const oldProductIndexes = indexes.filter(i => i.name !== 'manuals');
+const oldProductIndexes = indexes.filter((i) => i.name !== "manuals");
 for (const idx of oldProductIndexes) {
   await client.deleteIndex(idx.name);
 }
@@ -362,6 +393,7 @@ for (const idx of oldProductIndexes) {
 ## Upgrading from Previous Versions
 
 If upgrading from the old per-product index architecture:
+
 1. Run migration `004_create_product_resources.sql` in Supabase SQL Editor
 2. Re-upload existing product PDFs to populate the shared `"manuals"` index
 3. Delete old per-product indexes from MOSS (see above)
