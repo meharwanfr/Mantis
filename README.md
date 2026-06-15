@@ -7,10 +7,6 @@
 
 # Mantis — AI-Powered Support for Every Product You Own
 
-## 👥 Team Details
-- **Team Name:** [Your Team Name Here]
-- **Team Members:** Sparsh Khanna ([khannasparsh0001@gmail.com](mailto:khannasparsh0001@gmail.com)), [Add Other Members Here]
-
 ## 📝 Project Overview
 Mantis is a full-stack AI diagnostics platform. Upload a product manual (PDF), and Mantis indexes it in real‑time for semantic search, then lets you diagnose problems through an AI chat assistant that references your specific product documentation. It acts like a digital support technician or mechanic, guiding users through troubleshooting steps step-by-step using manufacturer-provided manuals rather than generic web search.
 
