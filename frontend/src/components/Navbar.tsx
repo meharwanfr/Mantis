@@ -25,70 +25,72 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm transition-colors duration-300">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         
-        {/* Brand Logo */}
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <svg
-              className="h-8 w-8 text-mantis-green"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M50 15C55 25 75 35 75 55C75 75 60 85 50 85C40 85 25 75 25 55C25 35 45 25 50 15Z"
-                stroke="currentColor"
-                strokeWidth="7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M50 15V85"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeDasharray="4 4"
-              />
-              <circle cx="50" cy="30" r="7" fill="currentColor" />
-              <path
-                d="M45 25C40 20 38 12 38 12"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-              <path
-                d="M55 25C60 20 62 12 62 12"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="font-display text-xl font-bold tracking-wider text-slate-900 dark:text-slate-50">
-              MANTIS
-            </span>
-          </Link>
-        </div>
-
-        {/* Center Nav Links */}
-        <nav className="hidden md:flex h-full items-center gap-8">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`relative flex h-full items-center text-sm font-medium transition-colors ${
-                  isActive
-                    ? "text-mantis-green font-semibold"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
-                }`}
+        <div className="flex items-center gap-8 lg:gap-12 h-full">
+          {/* Brand Logo */}
+          <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
+              <svg
+                className="h-8 w-8 text-mantis-green"
+                viewBox="0 0 100 100"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {link.name}
-                {isActive && (
-                  <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-t-full bg-mantis-green" />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+                <path
+                  d="M50 15C55 25 75 35 75 55C75 75 60 85 50 85C40 85 25 75 25 55C25 35 45 25 50 15Z"
+                  stroke="currentColor"
+                  strokeWidth="7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M50 15V85"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  strokeDasharray="4 4"
+                />
+                <circle cx="50" cy="30" r="7" fill="currentColor" />
+                <path
+                  d="M45 25C40 20 38 12 38 12"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M55 25C60 20 62 12 62 12"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <span className="font-display text-xl font-bold tracking-wider text-slate-900 dark:text-slate-50">
+                MANTIS
+              </span>
+            </Link>
+          </div>
+
+          {/* Center Nav Links */}
+          <nav className="hidden md:flex h-full items-center gap-8">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`relative flex h-full items-center text-sm font-medium transition-colors ${
+                    isActive
+                      ? "text-mantis-green font-semibold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-t-full bg-mantis-green" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
 
         {/* Right Search, Notification, Profile */}
         <div className="flex items-center gap-4">
