@@ -10,6 +10,8 @@
 ## 📝 Project Overview
 Mantis is a full-stack AI diagnostics platform. Upload a product manual (PDF), and Mantis indexes it in real‑time for semantic search, then lets you diagnose problems through an AI chat assistant that references your specific product documentation. It acts like a digital support technician or mechanic, guiding users through troubleshooting steps step-by-step using manufacturer-provided manuals rather than generic web search.
 
+#### Demo Link:  https://drive.google.com/file/d/1Vav72ZL5QHeWSpSI1Fi0Oqn97HEPfEQk/view?usp=drivesdk
+
 ## 🚀 Features and Functionality
 - **Product Marketplace:** A browsable catalog of all products registered on the platform with search capabilities.
 - **Support Material Repositories:** Upload support manuals (PDFs), images, links, or videos for specific products.
@@ -166,7 +168,7 @@ and assigns the company admin to it. It is idempotent — safe to run multiple t
 ## 🖼️ Screenshots & Media
 - **Platform Architecture Diagram:**
   ![Mantis Architecture Diagram](architecture_diagram.png)
-- **Demo Video Link:** *[Insert Demo Video Link Here]*
+- **Demo Video Link:** https://drive.google.com/file/d/1Vav72ZL5QHeWSpSI1Fi0Oqn97HEPfEQk/view?usp=drivesdk
 
 ## 💡 Additional Information for Evaluation
 For detailed implementation breakdowns, refer to:
