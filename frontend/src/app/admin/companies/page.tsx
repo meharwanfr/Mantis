@@ -5,6 +5,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 interface Company {
   id: string;
   name: string;
@@ -32,7 +34,7 @@ export default function AdminCompaniesPage() {
     const headers: Record<string, string> = {};
     if (token) headers["Authorization"] = `Bearer ${token}`;
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/companies?limit=${limit}&offset=${offset}`, { headers });
+      const res = await fetch(`${API_BASE}/api/admin/companies?limit=${limit}&offset=${offset}`, { headers });
       if (res.ok) {
         const data = await res.json();
         setCompanies(data.data || []);
@@ -83,7 +85,7 @@ export default function AdminCompaniesPage() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-      const res = await fetch("http://localhost:8000/api/admin/companies", {
+      const res = await fetch(`${API_BASE}/api/admin/companies`, {
         method: "POST",
         headers,
         body: JSON.stringify({ name: createName.trim(), slug: createSlug.trim() }),

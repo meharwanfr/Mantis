@@ -71,7 +71,7 @@ export const productRoutes = new Elysia()
   .guard({ as: 'scoped' }, app =>
     app.use(authDerive)
       .guard({ as: 'scoped' }, app2 =>
-        requireCompanyMember()(app2)
+        requireAnyAuth()(app2)
           .post('/api/products', async ({ body, user, set }) => {
         const { id, title, description, tags } = body;
 
@@ -144,11 +144,9 @@ export const productRoutes = new Elysia()
             .limit(1)
             .maybeSingle();
 
-          if (!memberships) {
-            set.status = 403;
-            return { error: 'You must belong to a company to upload manuals.' };
+          if (memberships) {
+            companyId = memberships.company_id;
           }
-          companyId = memberships.company_id;
         }
 
         try {

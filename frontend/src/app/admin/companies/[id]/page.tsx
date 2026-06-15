@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter, useParams } from "next/navigation";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 interface Member {
   id: string;
   user_id: string;
@@ -33,8 +35,8 @@ export default function AdminCompanyDetailPage() {
 
     try {
       const [companyRes, membersRes] = await Promise.all([
-        fetch(`http://localhost:8000/api/admin/companies?limit=200&offset=0`, { headers }),
-        fetch(`http://localhost:8000/api/companies/${id}/members`, { headers }),
+        fetch(`${API_BASE}/api/admin/companies?limit=200&offset=0`, { headers }),
+        fetch(`${API_BASE}/api/companies/${id}/members`, { headers }),
       ]);
 
       if (companyRes.ok) {
@@ -67,7 +69,7 @@ export default function AdminCompanyDetailPage() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/companies/${id}/members`, {
+      const res = await fetch(`${API_BASE}/api/admin/companies/${id}/members`, {
         method: "POST",
         headers,
         body: JSON.stringify({ userId: assignUserId.trim() }),
@@ -91,7 +93,7 @@ export default function AdminCompanyDetailPage() {
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/companies/${id}`, {
+      const res = await fetch(`${API_BASE}/api/admin/companies/${id}`, {
         method: "DELETE",
         headers,
         body: JSON.stringify({ confirm: true }),
@@ -186,7 +188,7 @@ export default function AdminCompanyDetailPage() {
                 <input
                   type="checkbox"
                   checked={deleteConfirm}
-                  onChange={() => {}}
+                  onChange={() => setDeleteConfirm(!deleteConfirm)}
                   className="rounded border-slate-300"
                 />
                 I confirm I want to delete this company

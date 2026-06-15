@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 function InvitationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -52,7 +54,7 @@ function InvitationContent() {
   const viewInvitation = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/invitations/view", {
+      const res = await fetch(`${API_BASE}/api/invitations/view`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
@@ -80,7 +82,7 @@ function InvitationContent() {
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
 
-      const res = await fetch("http://localhost:8000/api/invitations/accept", {
+      const res = await fetch(`${API_BASE}/api/invitations/accept`, {
         method: "POST",
         headers,
         body: JSON.stringify({ token }),
